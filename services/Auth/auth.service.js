@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-import { User } from "../../models/users";
+import { User } from "../../models/users.js";
+import { createError } from "../../helpers/error.js";
 
 class AuthClass {
   async register(payload) {
@@ -9,7 +9,7 @@ class AuthClass {
     const checkEmail = await User.findOne({ email: email });
 
     if (checkEmail) {
-      return { status: false, message: "User Alread Exist with that email" };
+      return createError(409, "user with this email already exists");
     }
 
     const saltRounds = 10;
@@ -24,7 +24,7 @@ class AuthClass {
 
     const user = await saveUser.save();
 
-    return { status: true, data: user, message: "User Created Successfully" };
+    return { message: "User Created Successfully", user };
   }
 }
 

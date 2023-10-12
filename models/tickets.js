@@ -1,25 +1,22 @@
 import mongoose from "mongoose";
-import uuid from "uuid";
+
 const ticketSchema = mongoose.Schema(
   {
-    _id: {
-      type: String,
-      default: uuid.v4(),
-    },
     ticketNo: {
       type: String,
     },
     title: {
       type: String,
-      requried,
+      requried: true,
     },
     description: {
       type: String,
-      requried,
+      requried: true,
     },
     priority: {
       type: String,
       enum: ["High", "Low", "Normal", "Critical"],
+      default: "Normal",
     },
     assignedTo: {
       type: mongoose.Schema.Types.ObjectId,
@@ -35,9 +32,10 @@ const ticketSchema = mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["On Hold:", "Resolved", "Closed", "Cancelled"],
+      enum: ["On Hold", "Resolved", "Closed", "Cancelled"],
+      default: "On Hold",
     },
-    createdBY: {
+    createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "users",
     },
@@ -45,4 +43,4 @@ const ticketSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-export const Tickets = new mongoose.Model("tickets", ticketSchema);
+export const Tickets = new mongoose.model("tickets", ticketSchema);
